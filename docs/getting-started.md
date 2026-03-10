@@ -1,0 +1,85 @@
+# Getting Started with the Mycoe Software CoE
+
+This guide helps new engineers onboard to the Centre of Excellence standards and use the provided templates.
+
+## Prerequisites
+
+| Tool | Minimum Version | Notes |
+|---|---|---|
+| Node.js | 20 LTS | For React development |
+| .NET SDK | 8.0 | For backend development |
+| Azure CLI | 2.57+ | For Azure deployments |
+| Bicep CLI | 0.25+ | Bundled with Azure CLI 2.51+ |
+| Power BI Desktop | Latest | For report development |
+| Git | 2.40+ | Version control |
+
+## Onboarding Checklist
+
+- [ ] Read the relevant standards document for your technology area
+- [ ] Clone this repository so you have a local copy of all templates
+- [ ] Copy the appropriate template to your new project
+- [ ] Follow the naming conventions defined in the standards
+- [ ] Add your project to the CoE project registry (see below)
+
+## Using a Template
+
+### React App
+
+```bash
+# Copy the template to your new project
+cp -r templates/react-app ./my-new-app
+cd my-new-app
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+### .NET Web API
+
+```bash
+# Copy the template to your new project
+cp -r templates/dotnet-api ./MyNewApi
+cd MyNewApi
+
+# Restore packages
+dotnet restore
+
+# Run the API
+dotnet run --project src/Template.Api
+```
+
+### Azure Infrastructure
+
+```bash
+# Copy the Bicep templates
+cp -r templates/azure/bicep ./infra
+
+# Preview a deployment (what-if)
+az deployment group what-if \
+  --resource-group rg-myapp-dev \
+  --template-file infra/main.bicep \
+  --parameters @infra/main.parameters.dev.json
+```
+
+## Project Registry
+
+When you start a new project, add an entry to the project registry table in this document:
+
+| Project Name | Technology | Team | Repository |
+|---|---|---|---|
+| *(your project here)* | React / .NET / Power BI | *(team name)* | *(repo URL)* |
+
+## Contributing to the CoE
+
+1. Raise a GitHub Issue describing the improvement or new standard
+2. Fork or branch from `main`
+3. Make your changes, following the existing file structure
+4. Submit a Pull Request — request at least one review from the CoE working group
+5. Changes merged to `main` are considered adopted standards
+
+## Questions & Support
+
+Raise a GitHub Issue with the `question` label, or reach out to the relevant guild listed in the main README.
