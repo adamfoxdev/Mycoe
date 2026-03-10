@@ -3,6 +3,8 @@
 A collection of reusable prompts for GitHub Copilot Chat to accelerate common development tasks.
 Use these in the Copilot Chat panel with `@workspace` for best results.
 
+For a comprehensive agent prompt that sets enterprise‑grade React and .NET code‑generation standards in one go, see **[enterprise-code-generation.md](enterprise-code-generation.md)**.
+
 ---
 
 ## React Prompts
