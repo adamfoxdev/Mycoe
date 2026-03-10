@@ -1,0 +1,38 @@
+// ── Shared Date Dimension ────────────────────────────────────
+// Paste this DAX into a new Calculated Table in your data model.
+// Adjust startYear and endYear as needed.
+// Mark the table as a Date Table on the 'Date' column.
+
+Dim_Date =
+VAR startYear = 2020
+VAR endYear   = YEAR(TODAY()) + 2
+VAR startDate = DATE(startYear, 1, 1)
+VAR endDate   = DATE(endYear, 12, 31)
+RETURN
+ADDCOLUMNS(
+    CALENDAR(startDate, endDate),
+    "Year",            YEAR([Date]),
+    "Month Number",    MONTH([Date]),
+    "Month",           FORMAT([Date], "MMMM"),
+    "Month Short",     FORMAT([Date], "MMM"),
+    "Quarter Number",  QUARTER([Date]),
+    "Quarter",         "Q" & QUARTER([Date]),
+    "Day of Week",     WEEKDAY([Date], 2),       // 1=Monday
+    "Day Name",        FORMAT([Date], "dddd"),
+    "Week Number",     WEEKNUM([Date], 2),        // ISO week
+    "Is Weekend",      IF(WEEKDAY([Date], 2) >= 6, TRUE, FALSE),
+    "Is Today",        IF([Date] = TODAY(), TRUE, FALSE),
+    // Financial year: adjust the month offset to match your organisation's FY start
+    // Example: FY starts 1 July → offset = -6
+    "Financial Year",  IF(MONTH([Date]) >= 7,
+                          "FY" & YEAR([Date]) + 1,
+                          "FY" & YEAR([Date])),
+    "Financial Quarter",
+                       SWITCH(
+                           TRUE(),
+                           MONTH([Date]) IN {7,8,9},   "Q1",
+                           MONTH([Date]) IN {10,11,12}, "Q2",
+                           MONTH([Date]) IN {1,2,3},    "Q3",
+                           "Q4"
+                       )
+)

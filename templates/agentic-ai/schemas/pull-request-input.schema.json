@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PullRequestAgentInput",
+  "description": "Input schema for the Pull Request Agent",
+  "type": "object",
+  "required": ["pullRequestNumber", "title", "headBranch", "baseBranch", "changedFiles"],
+  "properties": {
+    "pullRequestNumber":   { "type": "integer" },
+    "title":               { "type": "string" },
+    "description":         { "type": "string", "default": "" },
+    "baseBranch":          { "type": "string" },
+    "headBranch":          { "type": "string" },
+    "author":              { "type": "string" },
+    "linkedWorkItemIds":   { "type": "array", "items": { "type": "integer" } },
+    "changedFiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["filename", "status"],
+        "properties": {
+          "filename":   { "type": "string" },
+          "status":     { "type": "string", "enum": ["added", "modified", "removed", "renamed"] },
+          "additions":  { "type": "integer", "minimum": 0 },
+          "deletions":  { "type": "integer", "minimum": 0 },
+          "patch":      { "type": "string", "default": "" }
+        }
+      }
+    },
+    "ciStatus":     { "type": "string", "enum": ["pending", "success", "failure", "unknown"] },
+    "testCoverage": {
+      "type": "object",
+      "properties": {
+        "statements": { "type": "number", "minimum": 0, "maximum": 100 },
+        "branches":   { "type": "number", "minimum": 0, "maximum": 100 },
+        "functions":  { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    }
+  }
+}

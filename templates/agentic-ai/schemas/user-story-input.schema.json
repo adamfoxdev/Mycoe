@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UserStoryAgentInput",
+  "description": "Input schema for the User Story Agent",
+  "type": "object",
+  "required": ["workItemId", "workItemType", "title"],
+  "properties": {
+    "workItemId":          { "type": "integer", "description": "Azure DevOps work item ID" },
+    "workItemType":        { "type": "string", "enum": ["User Story", "Bug", "Feature", "Task"] },
+    "title":               { "type": "string", "minLength": 3 },
+    "description":         { "type": "string", "default": "" },
+    "acceptanceCriteria":  { "type": "string", "default": "" },
+    "storyPoints":         { "type": ["number", "null"], "minimum": 0 },
+    "assignedTo":          { "type": "string", "default": "" },
+    "tags":                { "type": "array", "items": { "type": "string" } },
+    "parentFeatureTitle":  { "type": "string", "default": "" }
+  }
+}
