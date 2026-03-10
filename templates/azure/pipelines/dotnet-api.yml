@@ -1,0 +1,162 @@
+# ── .NET Web API — Azure DevOps Pipeline ─────────────────────
+# Replace 'templates/dotnet-api' with your application's path.
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - templates/dotnet-api/**
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - templates/dotnet-api/**
+
+variables:
+  dotnetVersion: '8.0.x'
+  workingDirectory: 'templates/dotnet-api'
+  buildConfiguration: 'Release'
+
+stages:
+  # ── CI ─────────────────────────────────────────────────────
+  - stage: CI
+    displayName: 'Build & Test'
+    jobs:
+      - job: BuildAndTest
+        displayName: 'Build, Analyse & Test'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              version: $(dotnetVersion)
+            displayName: 'Install .NET SDK'
+
+          - script: dotnet restore
+            workingDirectory: $(workingDirectory)
+            displayName: 'Restore packages'
+
+          - script: dotnet build --no-restore -c $(buildConfiguration)
+            workingDirectory: $(workingDirectory)
+            displayName: 'Build'
+
+          - script: |
+              dotnet test --no-build -c $(buildConfiguration) \
+                --collect:"XPlat Code Coverage" \
+                --results-directory $(Agent.TempDirectory)/TestResults \
+                --logger trx
+            workingDirectory: $(workingDirectory)
+            displayName: 'Test with coverage'
+
+          - task: PublishTestResults@2
+            condition: always()
+            inputs:
+              testResultsFormat: 'VSTest'
+              testResultsFiles: '$(Agent.TempDirectory)/TestResults/**/*.trx'
+
+          - task: PublishCodeCoverageResults@2
+            condition: always()
+            inputs:
+              summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/coverage.cobertura.xml'
+              reportDirectory: '$(Agent.TempDirectory)/TestResults/CoverageReport'
+
+          - script: dotnet publish src/Template.Api -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)/api
+            workingDirectory: $(workingDirectory)
+            displayName: 'Publish'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: '$(Build.ArtifactStagingDirectory)/api'
+              artifactName: 'dotnet-api'
+
+  # ── Infrastructure (Bicep what-if) ─────────────────────────
+  - stage: InfraWhatIf
+    displayName: 'Infrastructure — What-If'
+    dependsOn: CI
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: WhatIf
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'azure-service-connection-dev'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az deployment group what-if \
+                  --resource-group $(DEV_RESOURCE_GROUP) \
+                  --template-file templates/azure/bicep/main.bicep \
+                  --parameters @templates/azure/bicep/main.parameters.dev.json
+
+  # ── Deploy to Dev ──────────────────────────────────────────
+  - stage: DeployDev
+    displayName: 'Deploy — Dev'
+    dependsOn: InfraWhatIf
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy to App Service (Dev)'
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: 'dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: 'Deploy Bicep'
+                  inputs:
+                    azureSubscription: 'azure-service-connection-dev'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      az deployment group create \
+                        --resource-group $(DEV_RESOURCE_GROUP) \
+                        --template-file templates/azure/bicep/main.bicep \
+                        --parameters @templates/azure/bicep/main.parameters.dev.json
+
+                - task: AzureWebApp@1
+                  displayName: 'Deploy API'
+                  inputs:
+                    azureSubscription: 'azure-service-connection-dev'
+                    appName: $(DEV_APP_SERVICE_NAME)
+                    package: '$(Pipeline.Workspace)/dotnet-api'
+
+  # ── Deploy to Production ───────────────────────────────────
+  - stage: DeployPrd
+    displayName: 'Deploy — Production'
+    dependsOn: DeployDev
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy to App Service (Production)'
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: 'production'   # Requires manual approval gate
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: 'Deploy Bicep'
+                  inputs:
+                    azureSubscription: 'azure-service-connection-prd'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      az deployment group create \
+                        --resource-group $(PRD_RESOURCE_GROUP) \
+                        --template-file templates/azure/bicep/main.bicep \
+                        --parameters @templates/azure/bicep/main.parameters.prd.json
+
+                - task: AzureWebApp@1
+                  displayName: 'Deploy API'
+                  inputs:
+                    azureSubscription: 'azure-service-connection-prd'
+                    appName: $(PRD_APP_SERVICE_NAME)
+                    package: '$(Pipeline.Workspace)/dotnet-api'

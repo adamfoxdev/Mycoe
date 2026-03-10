@@ -1,0 +1,54 @@
+// ── Standard Measure Library ─────────────────────────────────
+// Copy the measures you need into your _Measures table.
+// Replace Fact_Sales, [Amount], [Cost] with your actual table/column names.
+
+// ── Basic aggregations ──────────────────────────────────────
+
+Total Revenue =
+SUMX(Fact_Sales, Fact_Sales[Quantity] * Fact_Sales[Unit Price])
+
+Total Cost =
+SUM(Fact_Sales[Cost])
+
+Total Profit =
+[Total Revenue] - [Total Cost]
+
+Profit Margin % =
+DIVIDE([Total Profit], [Total Revenue], 0)
+
+Transaction Count =
+COUNTROWS(Fact_Sales)
+
+// ── Time intelligence ───────────────────────────────────────
+
+Revenue YTD =
+TOTALYTD([Total Revenue], Dim_Date[Date])
+
+Revenue PYTD =
+CALCULATE(
+    [Revenue YTD],
+    SAMEPERIODLASTYEAR(Dim_Date[Date])
+)
+
+Revenue YoY % =
+DIVIDE([Revenue YTD] - [Revenue PYTD], [Revenue PYTD], BLANK())
+
+Revenue MTD =
+TOTALMTD([Total Revenue], Dim_Date[Date])
+
+Revenue Rolling 12M =
+CALCULATE(
+    [Total Revenue],
+    DATESINPERIOD(Dim_Date[Date], LASTDATE(Dim_Date[Date]), -12, MONTH)
+)
+
+// ── Ranking ─────────────────────────────────────────────────
+
+Customer Revenue Rank =
+RANKX(
+    ALLSELECTED(Dim_Customer[Customer Name]),
+    [Total Revenue],
+    ,
+    DESC,
+    DENSE
+)

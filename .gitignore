@@ -1,0 +1,46 @@
+# Root .gitignore — Mycoe CoE repository
+
+# Node.js / React
+node_modules/
+dist/
+.env.local
+.env.*.local
+coverage/
+*.tsbuildinfo
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+*.nupkg
+*.snupkg
+
+# Azure
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Power BI
+*.pbix
+
+# Secrets & credentials
+*.pem
+*.key
+*.pfx
+*.p12
+.env
+secrets.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
