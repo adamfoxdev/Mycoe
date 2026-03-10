@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DeploymentAgentInput",
+  "description": "Input schema for the Deployment Agent",
+  "type": "object",
+  "required": ["trigger", "targetEnvironment", "commitSha"],
+  "properties": {
+    "trigger":             { "type": "string", "enum": ["pr_merged", "manual", "rollback"] },
+    "mergedPRNumber":      { "type": ["integer", "null"] },
+    "commitSha":           { "type": "string", "minLength": 7 },
+    "changedPaths":        { "type": "array", "items": { "type": "string" } },
+    "targetEnvironment":   { "type": "string", "enum": ["dev", "uat", "prd"] },
+    "requestedBy":         { "type": "string" },
+    "linkedWorkItemIds":   { "type": "array", "items": { "type": "integer" } },
+    "buildId":             { "type": "string" },
+    "artifactName":        { "type": "string" },
+    "emergencyOverride":   { "type": "boolean", "default": false }
+  }
+}

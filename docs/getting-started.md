@@ -64,6 +64,20 @@ az deployment group what-if \
   --parameters @infra/main.parameters.dev.json
 ```
 
+### Agentic AI Pipeline
+
+```bash
+# Copy the agent playbooks into your project
+cp -r templates/agentic-ai ./.agents
+
+# Configure environment variables (see each agent playbook for details)
+cp .agents/schemas/*.schema.json ./src/agents/schemas/
+
+# Run the Pipeline Orchestrator in observe mode first
+# Set AGENT_MODE=observe in your Azure DevOps Variable Group
+# Then register the ADO and GitHub webhooks to point at your orchestrator endpoint
+```
+
 ## Project Registry
 
 When you start a new project, add an entry to the project registry table in this document:

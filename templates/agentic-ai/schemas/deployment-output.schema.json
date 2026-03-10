@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DeploymentAgentOutput",
+  "description": "Output schema for the Deployment Agent",
+  "type": "object",
+  "required": ["targetEnvironment", "status"],
+  "properties": {
+    "targetEnvironment": { "type": "string", "enum": ["dev", "uat", "prd"] },
+    "commitSha":         { "type": "string" },
+    "gatesResult": {
+      "type": "object",
+      "properties": {
+        "passed":      { "type": "boolean" },
+        "gatesPassed": { "type": "integer" },
+        "gatesTotal":  { "type": "integer" },
+        "failedGate":  { "type": "string", "default": "" }
+      }
+    },
+    "infraDeploymentResult": {
+      "type": "object",
+      "properties": {
+        "skipped":       { "type": "boolean" },
+        "succeeded":     { "type": "boolean" },
+        "deploymentName": { "type": "string" }
+      }
+    },
+    "appDeploymentResult": {
+      "type": "object",
+      "properties": {
+        "appsDeployed":   { "type": "array", "items": { "type": "string" } },
+        "pipelineRunId":  { "type": "string" },
+        "succeeded":      { "type": "boolean" }
+      }
+    },
+    "verificationResult": {
+      "type": "object",
+      "properties": {
+        "healthCheckPassed": { "type": "boolean" },
+        "smokeTestsPassed":  { "type": "boolean" },
+        "telemetryOk":       { "type": "boolean" },
+        "appUrl":            { "type": "string" }
+      }
+    },
+    "rollbackPerformed":  { "type": "boolean", "default": false },
+    "rollbackToCommit":   { "type": "string", "default": "" },
+    "durationSeconds":    { "type": "number" },
+    "status":             { "type": "string", "enum": ["SUCCESS", "ROLLED_BACK", "FAILED", "ABORTED", "AWAITING_APPROVAL", "ESCALATED"] },
+    "failureReason":      { "type": "string", "default": "" }
+  }
+}

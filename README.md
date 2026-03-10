@@ -15,6 +15,9 @@ A Software CoE provides shared standards and reusable assets so every team can s
 | **Power BI** | Report/dataset naming, row-level security patterns, deployment guidelines |
 | **Microsoft 365** | SharePoint, Teams, and Graph API usage guidelines |
 | **Azure** | Bicep modules, Azure DevOps pipelines, RBAC patterns, naming conventions |
+| **Copilot & AI** | GitHub Copilot, Copilot for M365, Copilot Studio, Azure OpenAI guidelines |
+| **Security** | SDL gates, threat modelling, SAST, secrets management, incident response |
+| **Agentic AI** | Agent playbooks for end-to-end SDLC automation (stories → tests → PR → deploy) |
 
 ## Repository Layout
 
@@ -22,17 +25,24 @@ A Software CoE provides shared standards and reusable assets so every team can s
 Mycoe/
 ├── docs/                    # Standards, guidelines, and decision records
 │   ├── getting-started.md
-│   └── standards/
-│       ├── react.md
-│       ├── dotnet.md
-│       ├── powerbi.md
-│       ├── microsoft365.md
-│       └── azure.md
+│   ├── standards/
+│   │   ├── react.md
+│   │   ├── dotnet.md
+│   │   ├── powerbi.md
+│   │   ├── microsoft365.md
+│   │   ├── azure.md
+│   │   ├── copilot.md
+│   │   ├── security.md
+│   │   └── agentic-ai.md
+│   └── training/            # Learning pathways per technology
 └── templates/               # Copy-paste starter templates for each tech
     ├── react-app/           # Vite + React + TypeScript starter
     ├── dotnet-api/          # ASP.NET Core Web API starter
-    ├── powerbi/             # Power BI dataset & report guidance
-    └── azure/               # Bicep modules + Azure DevOps pipelines
+    ├── powerbi/             # Power BI DAX templates and guidelines
+    ├── azure/               # Bicep modules + Azure DevOps pipelines
+    ├── copilot/             # GitHub Copilot instructions + prompt library + Copilot Studio
+    ├── security/            # Threat model template + pre-release security checklist
+    └── agentic-ai/          # Agent playbooks for SDLC automation
 ```
 
 ## Getting Started
@@ -52,3 +62,6 @@ All engineers are encouraged to contribute improvements. Open a pull request tar
 | Power BI | Data & Analytics Guild |
 | Azure / DevOps | Platform Engineering |
 | Microsoft 365 | Collaboration & Productivity |
+| Copilot & AI | Platform Engineering + All Guilds |
+| Security | Security Champions Network |
+| Agentic AI | Platform Engineering |
