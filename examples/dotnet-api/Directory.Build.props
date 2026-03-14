@@ -1,0 +1,11 @@
+<Project>
+  <!-- Enforce consistent NuGet package versions and analysis rules across the solution -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+</Project>

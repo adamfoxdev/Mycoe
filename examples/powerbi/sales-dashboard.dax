@@ -1,0 +1,149 @@
+// ── Sales Dashboard Measures ─────────────────────────────────
+// Paste all measures into the _Measures hidden table.
+// Data model: Fact_Sales joined to Dim_Customer, Dim_Product, Dim_Region, Dim_Date.
+//
+// Replace column/table names with your actual source names.
+
+// ── Revenue & Cost ────────────────────────────────────────────
+
+Total Revenue =
+SUMX(Fact_Sales, Fact_Sales[Quantity] * Fact_Sales[Unit Price])
+
+Total Cost =
+SUMX(Fact_Sales, Fact_Sales[Quantity] * Fact_Sales[Unit Cost])
+
+Gross Profit =
+[Total Revenue] - [Total Cost]
+
+Gross Margin % =
+DIVIDE([Gross Profit], [Total Revenue], 0)
+
+// ── Volume ────────────────────────────────────────────────────
+
+Total Orders =
+DISTINCTCOUNT(Fact_Sales[Order ID])
+
+Total Units Sold =
+SUM(Fact_Sales[Quantity])
+
+Average Order Value =
+DIVIDE([Total Revenue], [Total Orders], 0)
+
+// ── Time Intelligence ─────────────────────────────────────────
+
+Revenue MTD =
+TOTALMTD([Total Revenue], Dim_Date[Date])
+
+Revenue QTD =
+TOTALQTD([Total Revenue], Dim_Date[Date])
+
+Revenue YTD =
+TOTALYTD([Total Revenue], Dim_Date[Date])
+
+Revenue PYTD =
+CALCULATE(
+    [Revenue YTD],
+    SAMEPERIODLASTYEAR(Dim_Date[Date])
+)
+
+Revenue YoY % =
+DIVIDE(
+    [Revenue YTD] - [Revenue PYTD],
+    [Revenue PYTD],
+    BLANK()
+)
+
+Revenue Last 30 Days =
+CALCULATE(
+    [Total Revenue],
+    DATESINPERIOD(Dim_Date[Date], LASTDATE(Dim_Date[Date]), -30, DAY)
+)
+
+Revenue Rolling 12M =
+CALCULATE(
+    [Total Revenue],
+    DATESINPERIOD(Dim_Date[Date], LASTDATE(Dim_Date[Date]), -12, MONTH)
+)
+
+// ── Prior Period Comparison ───────────────────────────────────
+
+Revenue Prior Month =
+CALCULATE(
+    [Total Revenue],
+    PREVIOUSMONTH(Dim_Date[Date])
+)
+
+Revenue MoM % =
+DIVIDE(
+    [Total Revenue] - [Revenue Prior Month],
+    [Revenue Prior Month],
+    BLANK()
+)
+
+Revenue Prior Quarter =
+CALCULATE(
+    [Total Revenue],
+    PREVIOUSQUARTER(Dim_Date[Date])
+)
+
+// ── Rankings ─────────────────────────────────────────────────
+
+Customer Revenue Rank =
+RANKX(
+    ALLSELECTED(Dim_Customer[Customer Name]),
+    [Total Revenue],
+    ,
+    DESC,
+    DENSE
+)
+
+Product Revenue Rank =
+RANKX(
+    ALLSELECTED(Dim_Product[Product Name]),
+    [Total Revenue],
+    ,
+    DESC,
+    DENSE
+)
+
+// ── Top N helpers ─────────────────────────────────────────────
+// Use these in visual-level filters to show only the top customers or products.
+
+Is Top 10 Customer =
+VAR _rank = [Customer Revenue Rank]
+RETURN
+IF(_rank <= 10, "Top 10", "Other")
+
+Is Top 10 Product =
+VAR _rank = [Product Revenue Rank]
+RETURN
+IF(_rank <= 10, "Top 10", "Other")
+
+// ── Regional breakdown ────────────────────────────────────────
+
+Region Revenue Share % =
+DIVIDE(
+    [Total Revenue],
+    CALCULATE([Total Revenue], REMOVEFILTERS(Dim_Region)),
+    0
+)
+
+// ── Customer metrics ─────────────────────────────────────────
+
+Unique Customers =
+DISTINCTCOUNT(Fact_Sales[Customer ID])
+
+New Customers =
+// Customers whose first order falls within the current filter context
+VAR _minDate = MIN(Dim_Date[Date])
+RETURN
+CALCULATE(
+    DISTINCTCOUNT(Fact_Sales[Customer ID]),
+    FILTER(
+        ALL(Fact_Sales),
+        CALCULATE(MIN(Fact_Sales[Order Date])) >= _minDate
+    )
+)
+
+Revenue per Customer =
+DIVIDE([Total Revenue], [Unique Customers], 0)
