@@ -1,0 +1,83 @@
+version: 2
+
+# ---------------------------------------------------------------------------
+# Source definitions
+# Define the raw tables this staging layer reads from.
+# ---------------------------------------------------------------------------
+sources:
+  - name: raw
+    database: "{{ env_var('DBT_RAW_DATABASE', 'raw') }}"
+    schema: dbo
+    tables:
+      - name: Customer
+        description: Raw customer records loaded from the source system.
+      - name: Order
+        description: Raw order headers loaded from the source system.
+
+# ---------------------------------------------------------------------------
+# Staging model definitions
+# Each model should apply column-level data quality tests.
+# ---------------------------------------------------------------------------
+models:
+  - name: stg_customers
+    description: Cleaned and typed customer records from the raw Customer table.
+    columns:
+      - name: customer_id
+        description: Surrogate or natural primary key for the customer.
+        tests:
+          - unique
+          - not_null
+
+      - name: email
+        description: Customer email address.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[^@]+@[^@]+\\.[^@]+$"
+
+      - name: status
+        description: Customer lifecycle status.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['active', 'inactive', 'pending']
+
+      - name: created_at
+        description: UTC timestamp when the customer record was created.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: datetime
+
+  - name: stg_orders
+    description: Cleaned and typed order headers from the raw Order table.
+    columns:
+      - name: order_id
+        description: Primary key for the order.
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        description: Foreign key to stg_customers.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+
+      - name: total_amount
+        description: Order total in the transaction currency.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 10000000
+
+      - name: order_date
+        description: Date the order was placed.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date

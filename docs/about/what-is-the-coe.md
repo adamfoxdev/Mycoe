@@ -93,6 +93,7 @@ The CoE covers the full stack used across Mycoe engineering:
 | **Security** | SDL gates, threat modelling, SAST, secrets management, incident response |
 | **Copilot & AI** | GitHub Copilot, Copilot for M365, Copilot Studio, Azure OpenAI governance |
 | **Agentic AI** | Agent playbooks, Semantic Kernel patterns, governance and safety framework |
+| **Python** | Coding standards, type checking, Ruff + mypy, pytest patterns, Azure Functions |
 
 ---
 

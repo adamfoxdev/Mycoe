@@ -14,6 +14,8 @@ If you are new to the CoE and want to understand what it is and why it exists be
 | Bicep CLI | 0.25+ | Bundled with Azure CLI 2.51+ |
 | Power BI Desktop | Latest | For report development |
 | Git | 2.40+ | Version control |
+| Python | 3.12+ | For Python development |
+| uv | Latest | Recommended Python package manager (`pip install uv`) |
 
 ## Onboarding Checklist
 
@@ -113,6 +115,45 @@ cp .agents/schemas/*.schema.json ./src/agents/schemas/
 # Run the Pipeline Orchestrator in observe mode first
 # Set AGENT_MODE=observe in your Azure DevOps Variable Group
 # Then register the ADO and GitHub webhooks to point at your orchestrator endpoint
+```
+
+### Data & SQL
+
+```bash
+# Copy the tSQLt test template to your database project
+cp -r templates/data-sql/tsqlt ./database/tests
+
+# Copy the dbt skeleton to your analytics project
+cp -r templates/data-sql/dbt ./analytics
+cd analytics
+dbt deps        # install dbt packages
+dbt run         # run models
+dbt test        # run data quality tests
+
+# Copy Flyway migration scripts to your migrations folder
+cp -r templates/data-sql/migrations ./database/migrations
+flyway migrate  # apply pending migrations
+```
+
+### Python
+
+```bash
+# Copy the template to your new project
+cp -r templates/python ./my-python-project
+cd my-python-project
+
+# Create and activate a virtual environment (using uv — recommended)
+uv venv
+source .venv/bin/activate   # Linux / macOS
+.venv\Scripts\activate      # Windows PowerShell
+
+# Install with dev dependencies
+uv pip install -e ".[dev]"
+
+# Lint, type-check, and test
+ruff check src tests
+mypy src
+pytest
 ```
 
 ## Project Registry

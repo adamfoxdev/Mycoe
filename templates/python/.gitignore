@@ -1,0 +1,29 @@
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Test and coverage output
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# mypy cache
+.mypy_cache/
+
+# Ruff cache
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment variable files — never commit secrets
+.env
+.env.local
