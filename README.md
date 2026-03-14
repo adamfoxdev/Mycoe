@@ -19,6 +19,7 @@ New here? Start with the **[About the CoE](docs/about/what-is-the-coe.md)** sect
 | **Azure** | Bicep modules, Azure DevOps pipelines, RBAC patterns, naming conventions |
 | **Copilot & AI** | GitHub Copilot, Copilot for M365, Copilot Studio, Azure OpenAI guidelines |
 | **Security** | SDL gates, threat modelling, SAST, secrets management, incident response |
+| **Data & SQL** | SQL coding standards, tSQLt unit testing, dbt testing, pipeline testing, migrations |
 | **Agentic AI** | Agent playbooks for end-to-end SDLC automation (stories → tests → PR → deploy) |
 
 ## Repository Layout
@@ -35,6 +36,7 @@ Mycoe/
 │   │   ├── react.md
 │   │   ├── dotnet.md
 │   │   ├── powerbi.md
+│   │   ├── data-sql.md
 │   │   ├── microsoft365.md
 │   │   ├── azure.md
 │   │   ├── copilot.md
@@ -67,6 +69,7 @@ All engineers are encouraged to contribute improvements. Open a pull request tar
 | React / Frontend | Frontend Guild |
 | .NET / Backend | Backend Guild |
 | Power BI | Data & Analytics Guild |
+| Data & SQL | Data & Analytics Guild |
 | Azure / DevOps | Platform Engineering |
 | Microsoft 365 | Collaboration & Productivity |
 | Copilot & AI | Platform Engineering + All Guilds |

@@ -28,6 +28,8 @@ Suitable for engineers who have React basics and are building production feature
 | [Fluent UI v9 — Getting Started](https://react.fluentui.dev/?path=/docs/concepts-introduction--page) | Docs | 1 hr |
 | [Testing Library — React](https://testing-library.com/docs/react-testing-library/intro/) | Docs | 2 hrs |
 | [Vitest Getting Started](https://vitest.dev/guide/) | Docs | 1 hr |
+| [Playwright — Getting Started](https://playwright.dev/docs/intro) | Docs | 1 hr |
+| [Husky + lint-staged](https://typicode.github.io/husky/) | Docs | 30 min |
 
 **Outcome:** Can build and test complete features using the Mycoe standard stack.
 
