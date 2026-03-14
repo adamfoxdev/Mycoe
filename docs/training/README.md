@@ -15,6 +15,7 @@ All Microsoft Learn paths are free. Other resources are available via the organi
 
 | Technology | Pathway |
 |---|---|
+| Visual Studio Code | [vscode.md](vscode.md) |
 | React | [react.md](react.md) |
 | .NET | [dotnet.md](dotnet.md) |
 | Azure | [azure.md](azure.md) |
@@ -30,6 +31,7 @@ All Microsoft Learn paths are free. Other resources are available via the organi
 Complete the following in your first two weeks:
 
 - [ ] Read the [getting-started guide](../getting-started.md)
+- [ ] Set up Visual Studio Code using the [VS Code training guide](vscode.md)
 - [ ] Set up your local development environment (Node.js, .NET SDK, Azure CLI)
 - [ ] Complete the Foundation tier for your primary technology
 - [ ] Clone this CoE repository and explore the templates
