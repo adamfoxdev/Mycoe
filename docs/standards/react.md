@@ -109,10 +109,236 @@ import { msalInstance } from './services/authService';
 
 ## Testing Standards
 
-- Minimum **80% statement coverage** enforced in CI
-- Unit-test all custom hooks and utility functions
-- Integration-test page components using React Testing Library
-- Do **not** test implementation details — test observable behaviour
+### Overview
+
+| Layer | Tool | Scope |
+|---|---|---|
+| Unit / Component | Vitest + React Testing Library | Hooks, utilities, individual components |
+| Integration | Vitest + React Testing Library | Page-level components with mocked services |
+| End-to-End | Playwright | Critical user journeys in a real browser |
+| Pre-commit gates | Husky + lint-staged | Lint and type-check before every commit |
+
+### Coverage Requirements
+
+- Minimum **80% statement, branch, function and line coverage** enforced in CI via `vitest run --coverage`
+- Coverage thresholds are configured in `vite.config.ts` and will fail the build if not met
+- Aim for **100% coverage of utility functions and custom hooks** — these are pure logic with no rendering cost
+
+### Unit and Component Tests (Vitest + React Testing Library)
+
+Use **Vitest** as the test runner (it is Vite-native and shares the same config) and **React Testing Library** to interact with components through the DOM the same way a user would.
+
+**Setup files** — `src/test-setup.ts` imports `@testing-library/jest-dom` matchers so you can use `toBeInTheDocument()`, `toHaveValue()`, etc.:
+
+```ts
+// src/test-setup.ts
+import '@testing-library/jest-dom';
+```
+
+**Component test example:**
+
+```tsx
+// src/components/UserCard/UserCard.test.tsx
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
+import { UserCard } from './UserCard';
+
+describe('UserCard', () => {
+  it('displays the user name', () => {
+    render(<UserCard userId="1" name="Alice" onSelect={vi.fn()} />);
+    expect(screen.getByText('Alice')).toBeInTheDocument();
+  });
+
+  it('calls onSelect with the user id when clicked', async () => {
+    const onSelect = vi.fn();
+    render(<UserCard userId="42" name="Bob" onSelect={onSelect} />);
+    await userEvent.click(screen.getByRole('button', { name: /select/i }));
+    expect(onSelect).toHaveBeenCalledWith('42');
+  });
+});
+```
+
+**Custom hook test example:**
+
+```tsx
+// src/hooks/useCounter.test.ts
+import { renderHook, act } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { useCounter } from './useCounter';
+
+describe('useCounter', () => {
+  it('increments the count', () => {
+    const { result } = renderHook(() => useCounter(0));
+    act(() => result.current.increment());
+    expect(result.current.count).toBe(1);
+  });
+});
+```
+
+**Key principles:**
+
+- Query by **role, label, or visible text** — never by `data-testid` unless there is no accessible alternative
+- Use `userEvent` from `@testing-library/user-event` for interactions (simulates real browser events), not `fireEvent`
+- Test **observable behaviour**, not internal state or implementation details
+- Wrap async operations with `await` + `waitFor` / `findBy*` queries
+- Mock only at the **service boundary** — mock `src/services/userService.ts`, not internal fetch calls
+
+**Mocking modules:**
+
+```tsx
+// Mock the entire service module
+vi.mock('@/services/userService', () => ({
+  getUser: vi.fn().mockResolvedValue({ id: '1', name: 'Alice' }),
+}));
+```
+
+**Mocking React Query / server state:**
+
+Wrap the component under test in a `QueryClientProvider` with a fresh `QueryClient` per test to avoid state leaking between tests:
+
+```tsx
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+function queryClientWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+      {children}
+    </QueryClientProvider>
+  );
+}
+
+render(<UserList />, { wrapper: queryClientWrapper });
+```
+
+**Mocking MSAL authentication:**
+
+Use `@azure/msal-react`'s `MsalProvider` with a mocked `PublicClientApplication` or a simple context stub:
+
+```tsx
+vi.mock('@azure/msal-react', () => ({
+  useMsal: () => ({ accounts: [{ username: 'test@example.com' }], instance: {} }),
+  MsalProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+```
+
+### End-to-End Tests (Playwright)
+
+Use **Playwright** for tests covering critical user journeys that span multiple pages or require a running back end.
+
+**Install and configure:**
+
+```bash
+npm install --save-dev @playwright/test
+npx playwright install
+```
+
+```ts
+// playwright.config.ts
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './e2e',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  reporter: 'html',
+  use: {
+    baseURL: 'http://localhost:5173',
+    trace: 'on-first-retry',
+  },
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+  ],
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:5173',
+    reuseExistingServer: !process.env.CI,
+  },
+});
+```
+
+**Test example:**
+
+```ts
+// e2e/login.spec.ts
+import { test, expect } from '@playwright/test';
+
+test('user can log in and see their dashboard', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: /sign in/i }).click();
+  // ... complete login flow
+  await expect(page.getByRole('heading', { name: /dashboard/i })).toBeVisible();
+});
+```
+
+**Playwright guidelines:**
+
+- Keep E2E tests **focused on journeys**, not individual component behaviour — leave that to Vitest
+- Use **Page Object Model** for pages that appear in multiple tests
+- Store test fixtures (mock API responses, test users) in `e2e/fixtures/`
+- Run Playwright in CI with `npx playwright test` — reports are saved to `playwright-report/`
+- Authenticate once and reuse the storage state to avoid repeated login flows per test
+
+### Pre-commit Hooks (Husky + lint-staged)
+
+Use **Husky** to enforce quality gates before every commit, so broken or poorly typed code never enters the repository.
+
+**Install:**
+
+```bash
+npm install --save-dev husky lint-staged
+npx husky init
+```
+
+**Configure `package.json`:**
+
+```json
+{
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "eslint --max-warnings 0",
+      "prettier --write"
+    ]
+  }
+}
+```
+
+**`.husky/pre-commit`:**
+
+```sh
+#!/usr/bin/env sh
+npx lint-staged
+npx tsc --noEmit
+```
+
+**`.husky/pre-push`:**
+
+```sh
+#!/usr/bin/env sh
+npm run test
+```
+
+This means:
+- Every **commit** runs ESLint and Prettier on staged files and a TypeScript type-check
+- Every **push** runs the full unit test suite
+
+> **Gotcha:** Husky hooks only run if the `prepare` script runs after `npm install`. Ensure your `package.json` includes `"prepare": "husky"`.
+
+### Testing Gotchas and Recommendations
+
+| Gotcha | Recommendation |
+|---|---|
+| `act(...)` warnings in tests | Wrap state-updating code in `act()` or use `userEvent` (which wraps in `act` automatically) |
+| Tests passing individually but failing in parallel | Ensure each test uses its own `QueryClient` / store instance — avoid shared module-level state |
+| `vi.mock` hoisting issues | Place `vi.mock(...)` calls at the top of the test file, before imports, or use `vi.doMock` for dynamic mocks |
+| Testing components that use `useNavigate` | Wrap in `MemoryRouter` or use `createMemoryRouter` from react-router-dom v6 |
+| Async `findBy*` vs `getBy*` | Use `findBy*` for elements that appear after async operations; `getBy*` throws immediately if not found |
+| Coverage gaps in error branches | Write a dedicated test that forces each error path (throw, null return, network error) |
+| Mocking `window` / `localStorage` | Use `vi.stubGlobal('localStorage', {...})` or `jsdom`'s built-in `localStorage` — reset between tests |
+| Playwright auth in CI | Store the signed-in browser storage state in a file and reuse with `storageState` in `playwright.config.ts` |
+| Snapshot tests becoming stale | Prefer assertion-based tests over snapshot tests; if you use snapshots, update them intentionally with `--update-snapshots` |
 
 ## CI/CD
 

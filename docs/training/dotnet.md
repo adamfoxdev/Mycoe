@@ -21,7 +21,9 @@
 | [Serilog — Getting Started](https://serilog.net/) | Docs | 1 hr |
 | [FluentValidation](https://docs.fluentvalidation.net/) | Docs | 1 hr |
 | [xUnit + Moq + FluentAssertions — Unit Testing](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test) | Tutorial | 2 hrs |
+| [NUnit Getting Started](https://docs.nunit.org/articles/nunit/getting-started/installation.html) | Docs | 1 hr |
 | [Integration Testing with WebApplicationFactory](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests) | Docs | 1 hr |
+| [Testcontainers for .NET](https://dotnet.testcontainers.org/) | Docs | 1 hr |
 | [Health Checks in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks) | Docs | 1 hr |
 
 **Outcome:** Can build production-grade APIs following Mycoe Clean Architecture standards.

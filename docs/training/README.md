@@ -19,6 +19,7 @@ All Microsoft Learn paths are free. Other resources are available via the organi
 | .NET | [dotnet.md](dotnet.md) |
 | Azure | [azure.md](azure.md) |
 | Power BI | [powerbi.md](powerbi.md) |
+| Data & SQL | [data-sql.md](data-sql.md) |
 | Microsoft 365 | [microsoft365.md](microsoft365.md) |
 | Copilot & AI | [copilot.md](copilot.md) |
 | Security | [security.md](security.md) |
