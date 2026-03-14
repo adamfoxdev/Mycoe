@@ -2,6 +2,8 @@
 
 This guide helps new engineers onboard to the Centre of Excellence standards and use the provided templates.
 
+If you are new to the CoE and want to understand what it is and why it exists before diving into the technical content, read **[docs/about/what-is-the-coe.md](about/what-is-the-coe.md)** first.
+
 ## Prerequisites
 
 | Tool | Minimum Version | Notes |
@@ -63,6 +65,41 @@ az deployment group what-if \
   --template-file infra/main.bicep \
   --parameters @infra/main.parameters.dev.json
 ```
+
+### Microsoft 365 — SPFx Web Part
+
+```bash
+# Copy the template to your new project
+cp -r templates/microsoft365/spfx-webpart ./my-webpart
+cd my-webpart
+
+# Install dependencies
+npm install
+
+# Start the local workbench
+gulp serve
+```
+
+### Microsoft 365 — Teams App
+
+```bash
+# Copy the template to your new project
+cp -r templates/microsoft365/teams-app ./my-teams-app
+
+# Open in VS Code with Teams Toolkit installed
+code ./my-teams-app
+# Use Teams Toolkit: Preview in Teams (Edge) to sideload and test
+```
+
+### Microsoft 365 — Power Automate Flow
+
+```bash
+# Copy the approval flow template
+cp -r templates/microsoft365/power-automate ./my-flow
+```
+
+Then import `my-flow/approval-flow.json` into Power Automate via **My Flows → Import → Import Package**.
+Update the connection references and parameters, then test before enabling in production.
 
 ### Agentic AI Pipeline
 

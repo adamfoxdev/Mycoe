@@ -6,6 +6,8 @@ Welcome to the **Mycoe Software Centre of Excellence (CoE)**. This repository is
 
 A Software CoE provides shared standards and reusable assets so every team can start fast and stay consistent. Rather than each team re-inventing the wheel, the CoE captures patterns that work and makes them available to everyone.
 
+New here? Start with the **[About the CoE](docs/about/what-is-the-coe.md)** section to understand our mission, how AI is woven into everything we do, and the value we deliver. If you need to make a case for investment, see the **[Business Case](docs/about/business-case.md)**.
+
 ## Technology Coverage
 
 | Technology | What We Standardise |
@@ -24,6 +26,10 @@ A Software CoE provides shared standards and reusable assets so every team can s
 ```
 Mycoe/
 ├── docs/                    # Standards, guidelines, and decision records
+│   ├── about/               # What the CoE is, business case, and benefits
+│   │   ├── what-is-the-coe.md
+│   │   ├── business-case.md
+│   │   └── benefits.md
 │   ├── getting-started.md
 │   ├── standards/
 │   │   ├── react.md
@@ -42,7 +48,8 @@ Mycoe/
     ├── azure/               # Bicep modules + Azure DevOps pipelines
     ├── copilot/             # GitHub Copilot instructions + prompt library + Copilot Studio
     ├── security/            # Threat model template + pre-release security checklist
-    └── agentic-ai/          # Agent playbooks for SDLC automation
+    ├── agentic-ai/          # Agent playbooks for SDLC automation
+    └── microsoft365/        # SPFx web part, Teams app manifest, Power Automate flow templates
 ```
 
 ## Getting Started
