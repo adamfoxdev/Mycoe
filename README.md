@@ -42,7 +42,8 @@ Mycoe/
     ├── azure/               # Bicep modules + Azure DevOps pipelines
     ├── copilot/             # GitHub Copilot instructions + prompt library + Copilot Studio
     ├── security/            # Threat model template + pre-release security checklist
-    └── agentic-ai/          # Agent playbooks for SDLC automation
+    ├── agentic-ai/          # Agent playbooks for SDLC automation
+    └── microsoft365/        # SPFx web part, Teams app manifest, Power Automate flow templates
 ```
 
 ## Getting Started

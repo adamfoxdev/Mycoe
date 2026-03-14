@@ -64,6 +64,41 @@ az deployment group what-if \
   --parameters @infra/main.parameters.dev.json
 ```
 
+### Microsoft 365 — SPFx Web Part
+
+```bash
+# Copy the template to your new project
+cp -r templates/microsoft365/spfx-webpart ./my-webpart
+cd my-webpart
+
+# Install dependencies
+npm install
+
+# Start the local workbench
+gulp serve
+```
+
+### Microsoft 365 — Teams App
+
+```bash
+# Copy the template to your new project
+cp -r templates/microsoft365/teams-app ./my-teams-app
+
+# Open in VS Code with Teams Toolkit installed
+code ./my-teams-app
+# Use Teams Toolkit: Preview in Teams (Edge) to sideload and test
+```
+
+### Microsoft 365 — Power Automate Flow
+
+```bash
+# Copy the approval flow template
+cp -r templates/microsoft365/power-automate ./my-flow
+```
+
+Then import `my-flow/approval-flow.json` into Power Automate via **My Flows → Import → Import Package**.
+Update the connection references and parameters, then test before enabling in production.
+
 ### Agentic AI Pipeline
 
 ```bash

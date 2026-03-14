@@ -15,13 +15,14 @@ All Microsoft Learn paths are free. Other resources are available via the organi
 
 | Technology | Pathway |
 |---|---|
-| React | [react.md](training/react.md) |
-| .NET | [dotnet.md](training/dotnet.md) |
-| Azure | [azure.md](training/azure.md) |
-| Power BI | [powerbi.md](training/powerbi.md) |
-| Microsoft 365 | [microsoft365.md](training/microsoft365.md) |
-| Copilot & AI | [copilot.md](training/copilot.md) |
-| Security | [security.md](training/security.md) |
+| React | [react.md](react.md) |
+| .NET | [dotnet.md](dotnet.md) |
+| Azure | [azure.md](azure.md) |
+| Power BI | [powerbi.md](powerbi.md) |
+| Microsoft 365 | [microsoft365.md](microsoft365.md) |
+| Copilot & AI | [copilot.md](copilot.md) |
+| Security | [security.md](security.md) |
+| Agentic AI | [agentic-ai.md](agentic-ai.md) |
 
 ## New Starter Checklist
 
@@ -34,4 +35,5 @@ Complete the following in your first two weeks:
 - [ ] Pair with a team member to deploy a template to the dev environment
 - [ ] Complete the Security Foundation training
 - [ ] Complete the Copilot Foundation training
+- [ ] If working on AI agent projects, complete the Agentic AI Foundation training
 - [ ] Meet your team's Security Champion

@@ -1,0 +1,36 @@
+{
+  "name": "my-webpart",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=18.17.1 <19.0.0"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "gulp bundle",
+    "clean": "gulp clean",
+    "test": "jest",
+    "lint": "eslint src --ext .ts,.tsx"
+  },
+  "dependencies": {
+    "@fluentui/react": "8.x",
+    "@microsoft/sp-core-library": "1.18.x",
+    "@microsoft/sp-lodash-subset": "1.18.x",
+    "@microsoft/sp-office-ui-fabric-core": "1.18.x",
+    "@microsoft/sp-property-pane": "1.18.x",
+    "@microsoft/sp-webpart-base": "1.18.x",
+    "@microsoft/sp-http": "1.18.x"
+  },
+  "devDependencies": {
+    "@microsoft/eslint-config-spfx": "1.18.x",
+    "@microsoft/eslint-plugin-spfx": "1.18.x",
+    "@microsoft/rush-stack-compiler-4.7": "0.1.x",
+    "@rushstack/eslint-config": "3.x",
+    "@types/react": "17.x",
+    "@types/react-dom": "17.x",
+    "eslint": "8.x",
+    "jest": "29.x",
+    "ts-jest": "29.x",
+    "typescript": "5.x"
+  }
+}

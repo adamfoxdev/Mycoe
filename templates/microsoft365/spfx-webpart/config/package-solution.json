@@ -1,0 +1,45 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/package-solution.schema.json",
+  "solution": {
+    "name": "my-webpart-client-side-solution",
+    "id": "00000000-0000-0000-0000-000000000000",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "Mycoe Engineering",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": ""
+    },
+    "webApiPermissionRequests": [
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.Read"
+      }
+    ],
+    "metadata": {
+      "shortDescription": {
+        "default": "Replace with your web part description"
+      },
+      "longDescription": {
+        "default": "Replace with your web part long description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "my-webpart Feature",
+        "id": "00000000-0000-0000-0000-000000000001",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/my-webpart.sppkg"
+  }
+}
