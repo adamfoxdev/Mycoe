@@ -21,6 +21,7 @@ New here? Start with the **[About the CoE](docs/about/what-is-the-coe.md)** sect
 | **Security** | SDL gates, threat modelling, SAST, secrets management, incident response |
 | **Data & SQL** | SQL coding standards, tSQLt unit testing, dbt testing, pipeline testing, migrations |
 | **Agentic AI** | Agent playbooks for end-to-end SDLC automation (stories → tests → PR → deploy) |
+| **Python** | Coding standards, type checking, Ruff linting, pytest patterns, Azure Functions |
 
 ## Repository Layout
 
@@ -41,7 +42,8 @@ Mycoe/
 │   │   ├── azure.md
 │   │   ├── copilot.md
 │   │   ├── security.md
-│   │   └── agentic-ai.md
+│   │   ├── agentic-ai.md
+│   │   └── python.md
 │   └── training/            # Learning pathways per technology
 └── templates/               # Copy-paste starter templates for each tech
     ├── react-app/           # Vite + React + TypeScript starter
@@ -51,7 +53,9 @@ Mycoe/
     ├── copilot/             # GitHub Copilot instructions + prompt library + Copilot Studio
     ├── security/            # Threat model template + pre-release security checklist
     ├── agentic-ai/          # Agent playbooks for SDLC automation
-    └── microsoft365/        # SPFx web part, Teams app manifest, Power Automate flow templates
+    ├── microsoft365/        # SPFx web part, Teams app manifest, Power Automate flow templates
+    ├── data-sql/            # tSQLt test template, dbt project skeleton, Flyway migrations
+    └── python/              # Python project template (pyproject.toml, Ruff, mypy, pytest)
 ```
 
 ## Getting Started
@@ -75,3 +79,4 @@ All engineers are encouraged to contribute improvements. Open a pull request tar
 | Copilot & AI | Platform Engineering + All Guilds |
 | Security | Security Champions Network |
 | Agentic AI | Platform Engineering |
+| Python | Backend Guild + Data & Analytics Guild |

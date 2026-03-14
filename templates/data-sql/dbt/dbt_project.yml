@@ -1,0 +1,36 @@
+name: mycoe_analytics
+version: '1.0.0'
+config-version: 2
+
+# The profile to use when running this project (matches profiles.yml)
+profile: mycoe_analytics
+
+# Paths to dbt resources
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+docs-paths: ["docs"]
+asset-paths: ["assets"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Default materialisation and tags per layer
+models:
+  mycoe_analytics:
+    staging:
+      +materialized: view
+      +tags: ["staging"]
+    marts:
+      +materialized: table
+      +tags: ["marts"]
+
+# Enforce all models have at least a not_null test on the primary key
+tests:
+  +store_failures: true
+  +severity: error

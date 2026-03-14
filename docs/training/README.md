@@ -25,6 +25,7 @@ All Microsoft Learn paths are free. Other resources are available via the organi
 | Copilot & AI | [copilot.md](copilot.md) |
 | Security | [security.md](security.md) |
 | Agentic AI | [agentic-ai.md](agentic-ai.md) |
+| Python | [python.md](python.md) |
 
 ## New Starter Checklist
 
