@@ -2,6 +2,8 @@
 
 This guide helps new engineers onboard to the Centre of Excellence standards and use the provided templates.
 
+If you are new to the CoE and want to understand what it is and why it exists before diving into the technical content, read **[docs/about/what-is-the-coe.md](about/what-is-the-coe.md)** first.
+
 ## Prerequisites
 
 | Tool | Minimum Version | Notes |

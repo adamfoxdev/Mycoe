@@ -13,7 +13,10 @@ This folder contains a reference approval flow that can be imported into Power A
 1. In Power Automate, go to **My Flows → Import → Import Package (Legacy)**
 2. Upload `approval-flow.json`
 3. Configure the connection references (SharePoint, Outlook, Teams) to use the **service account**
-4. Update the approval email addresses and SharePoint list URL
+4. Update the following parameters in the flow before enabling:
+   - `ApproverEmail` — replace `approver@example.com` with your approver's address or a distribution list
+   - `SharePointSiteUrl` — replace `https://contoso.sharepoint.com/sites/approvals` with your site URL
+   - `SharePointListName` — replace `Approval Requests` with the name of your SharePoint list
 5. Test with a non-production list before enabling in production
 
 ## Standards Checklist
