@@ -1,13 +1,28 @@
 import { Configuration, LogLevel } from '@azure/msal-browser';
 
 /**
+ * Validates that a required environment variable is present.
+ * Throws at startup rather than producing a confusing runtime auth failure.
+ */
+function requireEnv(key: string): string {
+  const value = import.meta.env[key] as string | undefined;
+  if (!value) {
+    throw new Error(
+      `Missing required environment variable: ${key}. ` +
+        'Create a .env.local file — see the README for the required variables.',
+    );
+  }
+  return value;
+}
+
+/**
  * MSAL configuration.
  * Values are read from environment variables — see README for required .env.local variables.
  */
 export const msalConfig: Configuration = {
   auth: {
-    clientId: import.meta.env.VITE_AAD_CLIENT_ID as string,
-    authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AAD_TENANT_ID as string}`,
+    clientId: requireEnv('VITE_AAD_CLIENT_ID'),
+    authority: `https://login.microsoftonline.com/${requireEnv('VITE_AAD_TENANT_ID')}`,
     redirectUri: window.location.origin,
   },
   cache: {
@@ -35,7 +50,7 @@ export const msalConfig: Configuration = {
 
 /** Scopes for the Tasks API. */
 export const apiScopes = {
-  tasks: [import.meta.env.VITE_AAD_API_SCOPE as string],
+  tasks: [requireEnv('VITE_AAD_API_SCOPE')],
 };
 
 /** Microsoft Graph scopes (add only what is needed). */

@@ -6,7 +6,7 @@ interface TaskCardProps {
   onDelete: (id: string) => void;
 }
 
-const priorityColours: Record<Task['priority'], string> = {
+const priorityColors: Record<Task['priority'], string> = {
   low: tokens.colorPaletteGreenBorderActive,
   medium: tokens.colorPaletteYellowBorderActive,
   high: tokens.colorPaletteCranberryBorderActive,
@@ -23,7 +23,7 @@ export function TaskCard({ task, onDelete }: TaskCardProps): JSX.Element {
     <Card
       style={{
         marginBottom: '1rem',
-        borderLeft: `4px solid ${priorityColours[task.priority]}`,
+        borderLeft: `4px solid ${priorityColors[task.priority]}`,
       }}
     >
       <CardHeader

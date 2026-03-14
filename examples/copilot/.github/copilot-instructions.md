@@ -68,7 +68,7 @@ Both layers authenticate via **Azure AD / Entra ID**.
 - `Console.WriteLine` in .NET — use `ILogger<T>`
 - Hardcoded secrets, connection strings, or API keys — use environment variables or Azure Key Vault
 - Direct database access from controllers — use the service/repository pattern
-- Non-null assertions (`!`) in TypeScript — prefer optional chaining (`?.`) and early returns
+- Non-null assertions (`!`) in TypeScript — prefer optional chaining (`?.`) and early returns; only use `!` when the TypeScript compiler cannot narrow the type but you have verified the value is non-null at that point in the code
 - Storing tokens in `localStorage` — use `sessionStorage` via MSAL's `cacheLocation` setting
 - Skipping `CancellationToken` parameters on async methods
 
