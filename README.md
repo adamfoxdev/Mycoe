@@ -31,7 +31,10 @@ Mycoe/
 │   ├── about/               # What the CoE is, business case, and benefits
 │   │   ├── what-is-the-coe.md
 │   │   ├── business-case.md
-│   │   └── benefits.md
+│   │   ├── benefits.md
+│   │   ├── community-of-practice.md
+│   │   ├── iterative-feedback-plan.md
+│   │   └── scope-poc-process.md
 │   ├── getting-started.md
 │   ├── standards/
 │   │   ├── react.md

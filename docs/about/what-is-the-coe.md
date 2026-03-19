@@ -119,6 +119,16 @@ Standard is adopted, documented, and templated
 Training pathway updated — community is notified
 ```
 
+For details on how the working group is structured, how meetings are run, and how to get involved, see **[docs/about/community-of-practice.md](community-of-practice.md)**.
+
+### Iterative Improvement
+
+The CoE does not stand still. Feedback from teams is continuously collected, triaged, and acted on. Every engineer can raise an issue, propose a change, or flag a gap. See **[docs/about/iterative-feedback-plan.md](iterative-feedback-plan.md)** for how the feedback loop works.
+
+### Proving New Ideas First
+
+Before committing to a new standard or adopting a new tool across all teams, the CoE runs time-boxed proofs of concept. See **[docs/about/scope-poc-process.md](scope-poc-process.md)** for the full process.
+
 ### Three Layers of Value
 
 | Layer | What It Is | How to Use It |
